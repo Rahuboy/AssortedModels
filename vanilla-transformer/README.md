@@ -1,5 +1,5 @@
 # Super simple transformer implementation in PyTorch.
-Source: https://www.youtube.com/watch?v=kCc8FmEb1nY \
+Source: [Video](https://www.youtube.com/watch?v=kCc8FmEb1nY) 
 Paper: https://arxiv.org/abs/1706.03762 
 
 Usage:
