@@ -1,8 +1,13 @@
+# Imports
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-# hyperparameters
+# Set seeds
+torch.manual_seed(1337)
+
+# --Hyperparameters----------------------------------------------------------------
+
 batch_size = 8  # how many independent sequences will we process in parallel?
 block_size = 128  # what is the maximum context length for predictions?
 max_iters = 10000
@@ -14,9 +19,8 @@ n_embd = 288
 n_head = 6
 n_layer = 6
 dropout = 0.2
-# ------------
 
-torch.manual_seed(1337)
+# --Data and Helper Functions--------------------------------------------------
 
 # wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt # noqa
 with open('input.txt', 'r', encoding='utf-8') as f:
@@ -71,6 +75,9 @@ def estimate_loss():
         out[split] = losses.mean()
     model.train()
     return out
+
+
+# --Networks-----------------------------------------------------------------------
 
 
 class Head(nn.Module):
@@ -226,6 +233,9 @@ class LargeLanguageModel(nn.Module):
         return idx
 
 
+# --Train----------------------------------------------------------------------
+
+
 model = LargeLanguageModel()
 m = model.to(device)
 
@@ -250,6 +260,9 @@ for iter in range(max_iters):
     loss.backward()
     optimizer.step()
 
-# generate from the model
+
+# --Generate-------------------------------------------------------------------
+
+
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print(decode(m.generate(context, max_new_tokens=1000)[0].tolist()))
